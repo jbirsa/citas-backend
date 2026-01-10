@@ -31,4 +31,27 @@ export class DateService {
 
     return { message: 'La cita con ID ' + id + ' fue borrada correctamente' };
   }
+
+  getDatesWithPriceAndTime(money: string, time: string) {
+    return this.datesRepository.find({
+      where: [
+        { money: money, time: time },
+        { money: money, time: 'all' },
+      ],
+    });
+  }
+
+  getDatesWithPrice(money: string) {
+    return this.datesRepository.find({
+      where: {
+        money: money,
+      },
+    });
+  }
+
+  getDatesWithTime(time: string) {
+    return this.datesRepository.find({
+      where: [{ time: time }, { time: 'all' }],
+    });
+  }
 }
