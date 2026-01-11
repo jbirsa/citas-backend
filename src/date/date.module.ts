@@ -6,7 +6,7 @@ import { DateService } from './date.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DateIdea])],
-  controllers: [DateController], // 👈 ¿Dice esto aquí?
+  controllers: [DateController],
   providers: [DateService],
 })
 export class DateModule {}

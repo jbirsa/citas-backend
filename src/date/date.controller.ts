@@ -1,43 +1,62 @@
 import { DateService } from './date.service';
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { CreateDateDto } from './dto/create_date.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Date')
+@ApiBearerAuth('access-token')
+@UseGuards(JwtAuthGuard)
 @Controller('dates')
 export class DateController {
   constructor(private readonly datesService: DateService) {}
 
   @Get()
-  getAllDates() {
-    return this.datesService.findAll();
+  getAllDates(@Request() req) {
+    const userId = req.user?.userId;
+    return this.datesService.findAll(userId);
   }
 
   @Post()
-  create(@Body() createDateDto: CreateDateDto) {
-    return this.datesService.create(createDateDto);
+  create(@Body() createDateDto: CreateDateDto, @Request() req) {
+    const userId = req.user?.userId;
+    return this.datesService.create(createDateDto, userId);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.datesService.remove(+id); // hace que el string sea un number, ya que el service necesita un number.
+  delete(@Param('id') id: string, @Request() req) {
+    const userId = req.user?.userId;
+    return this.datesService.remove(+id, userId);
   }
 
   @Get('price/:price')
-  getDatesWithPrice(@Param('price') price: string) {
-    return this.datesService.getDatesWithPrice(price);
+  getDatesWithPrice(@Param('price') price: string, @Request() req) {
+    const userId = req.user?.userId;
+    return this.datesService.getDatesWithPrice(price, userId);
   }
 
   @Get('time/:time')
-  getDatesWithTime(@Param('time') time: string) {
-    return this.datesService.getDatesWithTime(time);
+  getDatesWithTime(@Param('time') time: string, @Request() req) {
+    const userId = req.user?.userId;
+    return this.datesService.getDatesWithTime(time, userId);
   }
 
   @Get(':price/:time')
   getDatesWithPriceAndTime(
     @Param('price') price: string,
     @Param('time') time: string,
+    @Request() req,
   ) {
-    return this.datesService.getDatesWithPriceAndTime(price, time);
+    const userId = req.user?.userId;
+    return this.datesService.getDatesWithPriceAndTime(price, time, userId);
   }
 }

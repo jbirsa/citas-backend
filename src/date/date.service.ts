@@ -12,17 +12,32 @@ export class DateService {
     private datesRepository: Repository<DateIdea>,
   ) {}
 
-  findAll() {
-    return this.datesRepository.find();
+  findAll(userId: number) {
+    return this.datesRepository.find({
+      where: { user: { id: userId } },
+    });
   }
 
-  create(createDateDto: CreateDateDto) {
+  findById(id: number, userId: number) {
+    return this.datesRepository.find({
+      where: { user: { id: userId }, id: id },
+    });
+  }
+
+  create(createDateDto: CreateDateDto, userId: number) {
     const newDate = this.datesRepository.create(createDateDto);
     newDate.is_done = false;
+    newDate.user = { id: userId } as any;
     return this.datesRepository.save(newDate);
   }
 
-  async remove(id: number) {
+  async remove(id: number, userId: number) {
+    const dateExists = await this.findById(id, userId);
+
+    if (!dateExists || dateExists.length === 0) {
+      throw new NotFoundException('La cita no fue encontrada');
+    }
+
     const result = await this.datesRepository.delete(id);
 
     if (result.affected === 0) {
@@ -32,26 +47,30 @@ export class DateService {
     return { message: 'La cita con ID ' + id + ' fue borrada correctamente' };
   }
 
-  getDatesWithPriceAndTime(money: string, time: string) {
+  getDatesWithPriceAndTime(money: string, time: string, userId: number) {
     return this.datesRepository.find({
       where: [
-        { money: money, time: time },
-        { money: money, time: 'all' },
+        { money: money, time: time, user: { id: userId } },
+        { money: money, time: 'all', user: { id: userId } },
       ],
     });
   }
 
-  getDatesWithPrice(money: string) {
+  getDatesWithPrice(money: string, userId: number) {
     return this.datesRepository.find({
       where: {
         money: money,
+        user: { id: userId },
       },
     });
   }
 
-  getDatesWithTime(time: string) {
+  getDatesWithTime(time: string, userId: number) {
     return this.datesRepository.find({
-      where: [{ time: time }, { time: 'all' }],
+      where: [
+        { time: time, user: { id: userId } },
+        { time: 'all', user: { id: userId } },
+      ],
     });
   }
 }

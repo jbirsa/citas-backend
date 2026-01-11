@@ -10,6 +10,17 @@ async function bootstrap() {
     .setTitle('Citas API')
     .setDescription('API para gestionar las citas con mi novia')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Ingresa tu token JWT',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

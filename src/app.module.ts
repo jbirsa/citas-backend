@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config'; // 1. Importar Config
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DateModule} from './date/date.module'; // 2. Importar TypeORM
+import { DateModule} from './date/date.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module'; // 2. Importar TypeORM
 
 // Importa aquí tus módulos (cuando los crees)
 // import { DatesModule } from './dates/dates.module';
@@ -24,6 +26,8 @@ import { DateModule} from './date/date.module'; // 2. Importar TypeORM
       },
     }),
     DateModule,
+    UsersModule,
+    AuthModule,
 
     // Aquí irán tus módulos de funcionalidad
     // DatesModule

@@ -1,5 +1,6 @@
 // src/dates/date.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { User } from '../users/users.entity';
 
 @Entity('dates') // Nombre exacto de la tabla en SQL
 export class DateIdea {
@@ -20,4 +21,8 @@ export class DateIdea {
 
   @Column()
   money: string;
+
+  @ManyToOne(() => User, (user) => user.dates)
+  @JoinColumn({ name: 'userid' })
+  user: User;
 }
