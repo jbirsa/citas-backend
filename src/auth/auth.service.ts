@@ -40,6 +40,8 @@ export class AuthService {
     return this.usersService.create({
       username: userDto.username,
       password: hashedPassword,
+      name: userDto.name,
+      partner_name: userDto.partner_name,
     });
   }
 }

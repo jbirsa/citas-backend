@@ -11,9 +11,9 @@ export class CreateDateDto {
   @ApiProperty({ example: 'Llevar abrigo', description: 'Detalles extra' })
   description: string;
 
-  @ApiProperty({ example: 'Noche', description: 'Momento del día' })
+  @ApiProperty({ example: 'Night', description: 'Momento del día' })
   time: string;
 
-  @ApiProperty({ example: '$$$', description: 'Rango de precio' })
+  @ApiProperty({ example: 'Medium', description: 'Rango de precio' })
   money: string;
 }

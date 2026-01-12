@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create_user.dto';
 import { UsersService } from '../users/users.service';
 import { ApiTags } from '@nestjs/swagger';
+import { LoginUserDto } from '../users/dto/login_user.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -16,7 +17,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
   @Post('login')
-  async login(@Body() loginDto: CreateUserDto) {
+  async login(@Body() loginDto: LoginUserDto) {
     const user = await this.authService.validateUser(loginDto.username, loginDto.password);
     
     if (!user) {

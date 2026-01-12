@@ -16,4 +16,10 @@ export class User {
   @OneToMany( () => DateIdea, (date) => date.user )
   dates: DateIdea[];
 
+  @Column()
+  name: string;
+
+  @Column()
+  partner_name: string;
+
 }
