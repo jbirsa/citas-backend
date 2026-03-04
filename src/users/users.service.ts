@@ -20,9 +20,8 @@ export class UsersService {
     });
   }
 
-  findUserById(id: string) {
-    return this.userRepository.findOne({ where: { id: +id } //convierto el id de string a un numero
-    });
+  findUserById(id: number) {
+    return this.userRepository.findOne({ where: { id } });
   }
 
   async create(userDto: CreateUserDto) {
