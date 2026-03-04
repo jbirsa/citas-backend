@@ -4,6 +4,39 @@ import { Repository } from 'typeorm';
 import { DateIdea } from './date.entity';
 import { CreateDateDto } from './dto/create_date.dto';
 
+const DEFAULT_DATES: Array<Pick<DateIdea, 'name' | 'description' | 'time' | 'money'>> = [
+  {
+    name: 'Picnic en el parque',
+    description: 'Llevar manta, snacks y bebida favorita',
+    time: 'Day',
+    money: 'Low',
+  },
+  {
+    name: 'Cena romántica en casa',
+    description: 'Cocinar juntos y ver una peli',
+    time: 'Night',
+    money: 'Medium',
+  },
+  {
+    name: 'Paseo en bici',
+    description: 'Recorrido por la costanera al atardecer',
+    time: 'Afternoon',
+    money: 'Low',
+  },
+  {
+    name: 'Spa day',
+    description: 'Masajes, mascarillas y relax',
+    time: 'Day',
+    money: 'High',
+  },
+  {
+    name: 'Noche de juegos',
+    description: 'Competencia de juegos de mesa con snacks',
+    time: 'Night',
+    money: 'Low',
+  },
+];
+
 
 @Injectable()
 export class DateService {
@@ -29,6 +62,19 @@ export class DateService {
     newDate.is_done = false;
     newDate.user = { id: userId } as any;
     return this.datesRepository.save(newDate);
+  }
+
+  async seedDefaultDatesForUser(userId: number) {
+    if (!userId) return;
+
+    const defaultEntities = DEFAULT_DATES.map((idea) => {
+      const date = this.datesRepository.create({ ...idea });
+      date.is_done = false;
+      date.user = { id: userId };
+      return date;
+    });
+
+    await this.datesRepository.save(defaultEntities);
   }
 
   async remove(id: number, userId: number) {

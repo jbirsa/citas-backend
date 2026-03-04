@@ -24,5 +24,5 @@ export class DateIdea {
 
   @ManyToOne(() => User, (user) => user.dates)
   @JoinColumn({ name: 'userid' })
-  user: User;
+  user: { id: number };
 }

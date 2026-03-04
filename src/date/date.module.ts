@@ -8,5 +8,6 @@ import { DateService } from './date.service';
   imports: [TypeOrmModule.forFeature([DateIdea])],
   controllers: [DateController],
   providers: [DateService],
+  exports: [DateService],
 })
 export class DateModule {}
